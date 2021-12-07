@@ -1,6 +1,6 @@
 <template>
   <q-page padding>
-    <QDoc />
+    <doc-example title="example title" file="QDocPage"></doc-example>
   </q-page>
 </template>
 

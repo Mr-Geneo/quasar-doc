@@ -1,0 +1,79 @@
+.doc-page
+  padding: 16px 46px
+  max-width: 900px
+  margin-left: auto
+  margin-right: auto
+
+  > div, > pre
+    margin-bottom: 22px
+
+  &__top-link
+    color: inherit
+    text-decoration: none
+    outline: 0
+
+  &__badge
+    vertical-align: super
+
+@media (max-width: 600px)
+  .doc-page
+    padding: 16px
+
+.doc-page-related
+  color: $grey-9
+  transition: color .28s
+  border: 1px solid rgba(0,0,0,.1)
+
+  &:hover
+    color: $brand-primary
+
+.doc-page-related-bordered
+  border: 1px solid $separator-color
+
+.doc-page-footer
+  padding: 36px 0 16px
+
+  &__icons
+    font-size: 28px
+
+    a
+      text-decoration: none
+      outline: 0
+      color: $brand-primary
+      transition: color .28s
+
+      &:hover
+        color: $grey-8
+
+.doc-page-nav
+
+  &__footer
+    margin: 68px 0 0
+    margin-bottom: 0 !important
+
+  .q-link
+    position: relative
+    &:before
+      content: ''
+      position: absolute
+      top: 0
+      right: 0
+      bottom: 0
+      left: 0
+      background: #000
+      opacity: 0
+      transition: opacity .28s
+    &:focus:before
+      opacity: .1
+
+  & + &
+    margin-top: 0
+
+  .q-icon
+    font-size: 1.75em
+
+  &__categ
+    font-size: .8em
+
+  &__name
+    font-size: 1em

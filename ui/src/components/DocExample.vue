@@ -41,8 +41,11 @@
     <div class="row">
       <q-linear-progress v-if="loading" color="brand-primary" indeterminate></q-linear-progress>
       <component class="col" v-else :is="component" :class="componentClass"></component>
+      <q-banner v-if="error" inline-actions class="text-white bg-red">
+        {{ error }}
+      </q-banner>
     </div>
-    <DocCodepen v-if="!loading" ref="codepen" :title="title"></DocCodepen>
+    <!-- <DocCodepen v-if="!loading" ref="codepen" :title="title"></DocCodepen> -->
   </q-card>
 </template>
 
@@ -55,7 +58,7 @@ import { fabGithub, fabCodepen } from '@quasar/extras/fontawesome-v5'
 
 import CardTitle from './components/CardTitle.vue'
 import DocCode from './DocCode.vue'
-import DocCodepen from './DocCodepen.vue'
+// import DocCodepen from './DocCodepen.vue'
 
 const props = {
   title: String,
@@ -78,7 +81,7 @@ export default defineComponent({
   components: {
     CardTitle,
     DocCode,
-    DocCodepen,
+    // DocCodepen,
   },
   setup(props) {
     const prefixCls = ref('doc-example')
@@ -91,6 +94,7 @@ export default defineComponent({
     })
     const component = ref(null)
     const codepen = ref()
+    const error = ref(null)
 
     function parseTemplate(target, template) {
       const string = `(<${target}(.*)?>[\\w\\W]*<\\/${target}>)`,
@@ -130,25 +134,30 @@ export default defineComponent({
     })
 
     onMounted(() => {
-      Promise.all([
-        import(
-          /* webpackChunkName: "demo" */
-          /* webpackMode: "lazy-once" */
-          'examples/' + props.file + '.vue'
-        ).then((comp) => {
-          component.value = markRaw(comp.default)
-        }),
-
-        import(
-          /* webpackChunkName: "demo-source" */
-          /* webpackMode: "lazy-once" */
-          '!raw-loader!examples/' + props.file + '.vue'
-        ).then((comp) => {
-          parseComponent(comp.default)
-        }),
-      ]).then(() => {
+      if (props.file) {
+        Promise.all([
+          import(
+            /* webpackChunkName: "demo" */
+            /* webpackMode: "lazy-once" */
+            `examples/${props.file}.vue`
+          ).then((comp) => {
+            console.log('comp1 :>> ', comp)
+            component.value = markRaw(comp.default)
+          }),
+          import(
+            /* webpackChunkName: "demo-source" */
+            /* webpackMode: "lazy-once" */
+            `!raw-loader!examples/${props.file}.vue`
+          ).then((comp) => {
+            console.log('comp2 :>> ', comp)
+            parseComponent(comp.default)
+          }),
+        ]).then(() => {
+          loading.value = false
+        })
+      } else {
         loading.value = false
-      })
+      }
     })
 
     // const { t } = useLocale()
@@ -175,6 +184,7 @@ export default defineComponent({
         codepen.value.open(def.parts)
       },
       t,
+      error,
     }
   },
 })

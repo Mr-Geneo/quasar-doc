@@ -7,13 +7,17 @@ const buble = require('@rollup/plugin-buble')
 const json = require('@rollup/plugin-json')
 const { nodeResolve } = require('@rollup/plugin-node-resolve')
 const replace = require('@rollup/plugin-replace')
+// const cjs = require('@rollup/plugin-commonjs')
 const vue = require('rollup-plugin-vue')
-const VueI18n = require('rollup-plugin-vue-i18n')
+// const { default: i18n } = require('@intlify/rollup-plugin-vue-i18n')
 
 const { version } = require('../package.json')
 
 const buildConf = require('./config')
 const buildUtils = require('./utils')
+// const cjsConfig = {
+//   include: [/node_modules/],
+// }
 
 const rollupPlugins = [
   replace({
@@ -26,14 +30,12 @@ const rollupPlugins = [
     extensions: ['.js'],
     preferBuiltins: false,
   }),
-  vue({
-    customBlocks: ['i18n'],
-    // compileTemplate: true,
-  }),
-  VueI18n({
-    include: path.resolve(__dirname, `./ui/src/i18n/**`),
-  }),
+  vue(),
+  // i18n({
+  //   include: path.resolve(__dirname, `./ui/src/i18n/**`),
+  // }),
   json(),
+  // cjs(cjsConfig),
   buble({
     objectAssign: 'Object.assign',
   }),
@@ -51,7 +53,7 @@ const builds = [
       },
     },
     build: {
-      // unminified: true,
+      unminified: true,
       minified: true,
     },
   },
@@ -66,10 +68,11 @@ const builds = [
       },
     },
     build: {
-      // unminified: true,
+      unminified: true,
       minified: true,
     },
   },
+  /*
   {
     rollup: {
       input: {
@@ -87,14 +90,11 @@ const builds = [
       minExt: true,
     },
   },
+  */
 ]
 
 // Add your asset folders here, if needed
 // addAssets(builds, 'icon-set', 'iconSet')
-// addAssets(builds, 'lang', 'lang')
-
-// addAssets(builds, 'DocExample', 'DocExample')
-// addAssets(builds, 'lang', 'lang')
 // addAssets(builds, 'lang', 'lang')
 
 build(builds)

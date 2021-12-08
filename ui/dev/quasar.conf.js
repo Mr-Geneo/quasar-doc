@@ -45,7 +45,6 @@ module.exports = function (ctx) {
       chainWebpack(chain) {
         chain.resolve.alias.merge({
           ui: path.resolve(__dirname, `../src/index.esm.js`),
-          uisrc: path.resolve(__dirname, `../src`),
           examples: path.resolve(__dirname, `./src/examples`),
         })
 

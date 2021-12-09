@@ -3,7 +3,7 @@ const path = require('path')
 module.exports = {
   chainWebpack: (chain) => {
     chain.resolve.alias.merge({
-      examples: path.resolve(__dirname, `./src/examples`),
+      examples: path.resolve(__dirname, './src/examples'),
     })
   },
 
